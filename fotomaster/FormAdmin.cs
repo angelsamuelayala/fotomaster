@@ -20,30 +20,22 @@ namespace fotomaster
 
         private void btnregistrocliente_Click(object sender, EventArgs e)
         {
-            FormRegistrocliente formcliente = new FormRegistrocliente();
-            formcliente.Show();
-            this.Hide();
+            
         }
 
         private void btnsalir_Click(object sender, EventArgs e)
         {
-            FormLogin login = new FormLogin();
-            login.Show();
-            this.Close();
+
         }
 
         private void btnregistrousuario_Click(object sender, EventArgs e)
         {
-            FormRegistrousuario usuario = new FormRegistrousuario();
-            usuario.Show();
-            this.Close();
+
         }
 
         private void btnventa_Click(object sender, EventArgs e)
         {
-            FormVenta venta = new FormVenta();
-            venta.Show();
-            this.Close();
+
         }
 
 
@@ -57,9 +49,7 @@ namespace fotomaster
 
         private void btndetalleventa_Click(object sender, EventArgs e)
         {
-            FormDetalleventa detalleventa = new FormDetalleventa();
-            detalleventa.Show();
-            this.Close();
+           
         }
 
 
@@ -75,7 +65,49 @@ namespace fotomaster
             FormClientefoto clientefoto = new FormClientefoto();
             clientefoto.Show();
             this.Close();
-        
+
+        }
+        //---------------------------------------------------------------------------------------------
+
+        private void btnsalir_Click_1(object sender, EventArgs e)
+        {
+            FormLogin login = new FormLogin();
+            login.Show();
+            this.Close();
+        }
+
+        private void btnregistrocliente_Click_1(object sender, EventArgs e)
+        {
+            FormRegistrousuario usuario = new FormRegistrousuario();
+            usuario.Show();
+            this.Close();
+        }
+
+        private void btnregistrousuario_Click_1(object sender, EventArgs e)
+        {
+            FormRegistrousuario usuario = new FormRegistrousuario();
+            usuario.Show();
+            this.Close();
+        }
+
+        private void btnreportes_Click_1(object sender, EventArgs e)
+        {
+            FormReportes reportesForm = new FormReportes();
+            reportesForm.Show();
+        }
+
+        private void btnventa_Click_1(object sender, EventArgs e)
+        {
+            FormVenta venta = new FormVenta();
+            venta.Show();
+            this.Close();
+        }
+
+        private void btndetalleventa_Click_1(object sender, EventArgs e)
+        {
+            FormDetalleventa detalleventa = new FormDetalleventa();
+            detalleventa.Show();
+            this.Close();
         }
     }
 }

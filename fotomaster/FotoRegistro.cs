@@ -10,6 +10,7 @@ namespace fotomaster
     {
         public int IdFoto { get; set; }
         public int IdCliente { get; set; }
+        public string NombreCompleto { get; set; }
         public DateTime Fecha { get; set; }
         public byte[] FotoBytes { get; set; }
         public double[] Embedding { get; set; }

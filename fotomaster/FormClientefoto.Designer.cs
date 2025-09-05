@@ -36,11 +36,11 @@
             pictureBoxConsulta = new PictureBox();
             pictureBox1 = new PictureBox();
             btndescargar = new Button();
-            btnCheckEmbeddings = new Button();
-            btnTestSelf = new Button();
             btnBuscarPorFoto = new Button();
-            BtnIndexarEmbeddings = new Button();
             BtnCargarFoto = new Button();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvFotos).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxConsulta).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -54,10 +54,11 @@
             btnvolver.TabIndex = 0;
             btnvolver.Text = "Volver";
             btnvolver.UseVisualStyleBackColor = true;
+            btnvolver.Click += btnvolver_Click;
             // 
             // txtBuscarCliente
             // 
-            txtBuscarCliente.Location = new Point(211, 100);
+            txtBuscarCliente.Location = new Point(175, 205);
             txtBuscarCliente.Name = "txtBuscarCliente";
             txtBuscarCliente.Size = new Size(299, 23);
             txtBuscarCliente.TabIndex = 1;
@@ -66,111 +67,114 @@
             // 
             listClientes.FormattingEnabled = true;
             listClientes.ItemHeight = 15;
-            listClientes.Location = new Point(214, 135);
+            listClientes.Location = new Point(178, 240);
             listClientes.Name = "listClientes";
             listClientes.Size = new Size(295, 64);
             listClientes.TabIndex = 2;
             // 
             // btnRefrescar
             // 
-            btnRefrescar.Location = new Point(704, 82);
+            btnRefrescar.Location = new Point(592, 111);
             btnRefrescar.Name = "btnRefrescar";
             btnRefrescar.Size = new Size(106, 56);
             btnRefrescar.TabIndex = 3;
             btnRefrescar.Text = "Refrescar";
             btnRefrescar.UseVisualStyleBackColor = true;
+            btnRefrescar.Click += btnRefrescar_Click;
             // 
             // dgvFotos
             // 
             dgvFotos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvFotos.Location = new Point(703, 154);
+            dgvFotos.Location = new Point(716, 111);
             dgvFotos.Name = "dgvFotos";
-            dgvFotos.Size = new Size(352, 388);
+            dgvFotos.Size = new Size(469, 825);
             dgvFotos.TabIndex = 4;
             // 
             // pictureBoxConsulta
             // 
-            pictureBoxConsulta.Location = new Point(1157, 44);
+            pictureBoxConsulta.Location = new Point(1407, 548);
             pictureBoxConsulta.Name = "pictureBoxConsulta";
-            pictureBoxConsulta.Size = new Size(289, 300);
+            pictureBoxConsulta.Size = new Size(396, 388);
+            pictureBoxConsulta.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxConsulta.TabIndex = 5;
             pictureBoxConsulta.TabStop = false;
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(1138, 365);
+            pictureBox1.Location = new Point(1407, 108);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(328, 292);
+            pictureBox1.Size = new Size(396, 388);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
             // 
             // btndescargar
             // 
-            btndescargar.Location = new Point(1157, 695);
+            btndescargar.Location = new Point(1223, 895);
             btndescargar.Name = "btndescargar";
             btndescargar.Size = new Size(142, 38);
             btndescargar.TabIndex = 7;
             btndescargar.Text = "Descargar";
             btndescargar.UseVisualStyleBackColor = true;
-            // 
-            // btnCheckEmbeddings
-            // 
-            btnCheckEmbeddings.Location = new Point(768, 598);
-            btnCheckEmbeddings.Name = "btnCheckEmbeddings";
-            btnCheckEmbeddings.Size = new Size(156, 42);
-            btnCheckEmbeddings.TabIndex = 8;
-            btnCheckEmbeddings.Text = "CheckEmbedding";
-            btnCheckEmbeddings.UseVisualStyleBackColor = true;
-            // 
-            // btnTestSelf
-            // 
-            btnTestSelf.Location = new Point(768, 675);
-            btnTestSelf.Name = "btnTestSelf";
-            btnTestSelf.Size = new Size(156, 36);
-            btnTestSelf.TabIndex = 9;
-            btnTestSelf.Text = "TestSelf";
-            btnTestSelf.UseVisualStyleBackColor = true;
+            btndescargar.Click += btndescargar_Click;
             // 
             // btnBuscarPorFoto
             // 
-            btnBuscarPorFoto.Location = new Point(214, 669);
+            btnBuscarPorFoto.Location = new Point(381, 442);
             btnBuscarPorFoto.Name = "btnBuscarPorFoto";
-            btnBuscarPorFoto.Size = new Size(148, 59);
+            btnBuscarPorFoto.Size = new Size(155, 54);
             btnBuscarPorFoto.TabIndex = 11;
             btnBuscarPorFoto.Text = "Buscar por foto";
             btnBuscarPorFoto.UseVisualStyleBackColor = true;
             btnBuscarPorFoto.Click += btnBuscarPorFoto_Click;
             // 
-            // BtnIndexarEmbeddings
-            // 
-            BtnIndexarEmbeddings.Location = new Point(502, 676);
-            BtnIndexarEmbeddings.Name = "BtnIndexarEmbeddings";
-            BtnIndexarEmbeddings.Size = new Size(195, 52);
-            BtnIndexarEmbeddings.TabIndex = 12;
-            BtnIndexarEmbeddings.Text = "IndexarEmbeddings";
-            BtnIndexarEmbeddings.UseVisualStyleBackColor = true;
-            BtnIndexarEmbeddings.Click += BtnIndexarEmbeddings_Click;
-            // 
             // BtnCargarFoto
             // 
-            BtnCargarFoto.Location = new Point(58, 582);
+            BtnCargarFoto.Location = new Point(178, 442);
             BtnCargarFoto.Name = "BtnCargarFoto";
-            BtnCargarFoto.Size = new Size(155, 49);
+            BtnCargarFoto.Size = new Size(155, 54);
             BtnCargarFoto.TabIndex = 13;
             BtnCargarFoto.Text = "Cargar Foto";
             BtnCargarFoto.UseVisualStyleBackColor = true;
             BtnCargarFoto.Click += BtnCargarFoto_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(62, 213);
+            label1.Name = "label1";
+            label1.Size = new Size(91, 15);
+            label1.TabIndex = 14;
+            label1.Text = "Nombre Cliente";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(1407, 530);
+            label2.Name = "label2";
+            label2.Size = new Size(105, 15);
+            label2.TabIndex = 15;
+            label2.Text = "Fotografia Sistema";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(1407, 90);
+            label3.Name = "label3";
+            label3.Size = new Size(101, 15);
+            label3.TabIndex = 16;
+            label3.Text = "Fotografia Cliente";
+            // 
             // FormClientefoto
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1544, 781);
+            ClientSize = new Size(1924, 1041);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(BtnCargarFoto);
-            Controls.Add(BtnIndexarEmbeddings);
             Controls.Add(btnBuscarPorFoto);
-            Controls.Add(btnTestSelf);
-            Controls.Add(btnCheckEmbeddings);
             Controls.Add(btndescargar);
             Controls.Add(pictureBox1);
             Controls.Add(pictureBoxConsulta);
@@ -180,7 +184,9 @@
             Controls.Add(txtBuscarCliente);
             Controls.Add(btnvolver);
             Name = "FormClientefoto";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FormClientefoto";
+            WindowState = FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)dgvFotos).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxConsulta).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -198,10 +204,10 @@
         private PictureBox pictureBoxConsulta;
         private PictureBox pictureBox1;
         private Button btndescargar;
-        private Button btnCheckEmbeddings;
-        private Button btnTestSelf;
         private Button btnBuscarPorFoto;
-        private Button BtnIndexarEmbeddings;
         private Button BtnCargarFoto;
+        private Label label1;
+        private Label label2;
+        private Label label3;
     }
 }

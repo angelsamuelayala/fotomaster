@@ -40,12 +40,13 @@
             // 
             // btnsalir
             // 
-            btnsalir.Location = new Point(32, 23);
+            btnsalir.Location = new Point(12, 12);
             btnsalir.Name = "btnsalir";
             btnsalir.Size = new Size(102, 52);
             btnsalir.TabIndex = 0;
             btnsalir.Text = "Salir";
             btnsalir.UseVisualStyleBackColor = true;
+            btnsalir.Click += btnsalir_Click_1;
             // 
             // btnregistrocliente
             // 
@@ -55,6 +56,7 @@
             btnregistrocliente.TabIndex = 1;
             btnregistrocliente.Text = "Cliente";
             btnregistrocliente.UseVisualStyleBackColor = true;
+            btnregistrocliente.Click += btnregistrocliente_Click_1;
             // 
             // btnregistrousuario
             // 
@@ -64,6 +66,7 @@
             btnregistrousuario.TabIndex = 2;
             btnregistrousuario.Text = "Usuarios";
             btnregistrousuario.UseVisualStyleBackColor = true;
+            btnregistrousuario.Click += btnregistrousuario_Click_1;
             // 
             // btnreportes
             // 
@@ -73,15 +76,17 @@
             btnreportes.TabIndex = 3;
             btnreportes.Text = "Reportes";
             btnreportes.UseVisualStyleBackColor = true;
+            btnreportes.Click += btnreportes_Click_1;
             // 
             // btnventa
             // 
-            btnventa.Location = new Point(28, 355);
+            btnventa.Location = new Point(32, 355);
             btnventa.Name = "btnventa";
             btnventa.Size = new Size(168, 65);
             btnventa.TabIndex = 4;
             btnventa.Text = "Venta";
             btnventa.UseVisualStyleBackColor = true;
+            btnventa.Click += btnventa_Click_1;
             // 
             // btnclientefoto
             // 
@@ -111,12 +116,13 @@
             btndetalleventa.TabIndex = 7;
             btndetalleventa.Text = "Detalle de venta";
             btndetalleventa.UseVisualStyleBackColor = true;
+            btndetalleventa.Click += btndetalleventa_Click_1;
             // 
             // FormAdmin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(897, 716);
+            ClientSize = new Size(1924, 1041);
             Controls.Add(btndetalleventa);
             Controls.Add(btnservicios);
             Controls.Add(btnclientefoto);

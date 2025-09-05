@@ -35,7 +35,10 @@ namespace fotomaster
             // 🔹 Ocultar el ListBox al inicio
             listClientes.Visible = false;
             dgvFotos.CellClick += dgvFotos_CellClick;
-            // this.btndescargar.Click += new EventHandler(this.btndescargar_Click);
+            dgvFotos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvFotos.RowHeadersVisible = false;      // Oculta la primera columna gris
+            dgvFotos.AllowUserToAddRows = false;
+
 
             // === Inicializa IA ===
             try
@@ -47,26 +50,13 @@ namespace fotomaster
                 MessageBox.Show("IA no inicializada: " + ex.Message, "Modelos Dlib", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-        
+
             btnBuscarPorFoto.Click += btnBuscarPorFoto_Click;
-            BtnIndexarEmbeddings.Click += BtnIndexarEmbeddings_Click;
 
-            // === Botones de diagnóstico ===
-            btnCheckEmbeddings.Click += btnCheckEmbeddings_Click; // contar embeddings faltantes
-            btnTestSelf.Click += btnTestSelf_Click;
         }
 
 
 
-
-
-
-        private void btnvolver_Click(object sender, EventArgs e)
-        {
-            FormAdmin admin = new FormAdmin();
-            admin.Show();
-            this.Close();
-        }
 
         private void CargarClientes()
         {
@@ -96,6 +86,10 @@ namespace fotomaster
 
         private void CargarFotosCliente(int idCliente)
         {
+
+            dgvFotos.DataSource = null;
+            dgvFotos.Columns.Clear();
+
             using (MySqlConnection con = Conexion.ObtenerConexion())
             {
                 con.Open();
@@ -122,9 +116,11 @@ namespace fotomaster
                 }
 
                 dgvFotos.DataSource = dtConImagen;
-                dgvFotos.RowTemplate.Height = 100;
-                dgvFotos.Columns["Foto"].Width = 100;
+                dgvFotos.RowTemplate.Height = 150;
+                dgvFotos.Columns["Foto"].Width = 150;
                 ((DataGridViewImageColumn)dgvFotos.Columns["Foto"]).ImageLayout = DataGridViewImageCellLayout.Zoom;
+                dgvFotos.Columns["Fecha"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgvFotos.Columns["Fecha"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
         }
 
@@ -170,6 +166,7 @@ namespace fotomaster
 
                 // 🔹 Cargar fotos de este cliente en el DataGridView
                 CargarFotosCliente(idClienteSeleccionado);
+                CargarFotosCliente(idClienteSeleccionado);
             }
         }
 
@@ -181,38 +178,13 @@ namespace fotomaster
 
                 if (row.Cells["Foto"].Value != null && row.Cells["Foto"].Value is System.Drawing.Image)
                 {
-                    pictureBox1.Image = (System.Drawing.Image)row.Cells["Foto"].Value;
+                    pictureBoxConsulta.Image = (System.Drawing.Image)row.Cells["Foto"].Value;
                 }
             }
         }
 
 
-        private void btndescargar_Click(object sender, EventArgs e)
-        {
-            if (pictureBox1.Image != null)
-            {
-                using (SaveFileDialog sfd = new SaveFileDialog())
-                {
-                    sfd.Filter = "PNG Image|*.png|JPEG Image|*.jpg|Bitmap Image|*.bmp";
-                    sfd.Title = "Guardar imagen";
 
-                    if (sfd.ShowDialog() == DialogResult.OK)
-                    {
-                        // 🔹 Clonar la imagen para evitar bloqueo de GDI+
-                        using (Bitmap bmp = new Bitmap(pictureBox1.Image))
-                        {
-                            bmp.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Png);
-                        }
-
-                        MessageBox.Show("Imagen guardada correctamente");
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("No hay ninguna imagen en el PictureBox");
-            }
-        }
 
         /* private void btnIndexarEmbeddings_Click(object sender, EventArgs e)
          {
@@ -349,7 +321,21 @@ namespace fotomaster
             using (MySqlConnection con = Conexion.ObtenerConexion())
             {
                 con.Open();
-                string query = "SELECT idFoto, idCliente, fotobinario, fecha, embedding FROM fotodigital";
+                string query = @"
+            SELECT 
+                fd.idFoto, 
+                fd.idCliente, 
+                fd.fotobinario, 
+                fd.fecha, 
+                fd.embedding,
+                p.nombre,
+                p.apellido
+            FROM 
+                fotodigital fd
+            JOIN 
+                Cliente c ON fd.idCliente = c.idCliente
+            JOIN 
+                Persona p ON c.idCliente = p.idPersona";
                 MySqlCommand cmd = new MySqlCommand(query, con);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -357,11 +343,14 @@ namespace fotomaster
                     {
                         byte[] fotoBytes = (byte[])reader["fotobinario"];
                         byte[] embeddingBytes = reader["embedding"] != DBNull.Value ? (byte[])reader["embedding"] : null;
+                        string nombre = reader["nombre"].ToString();
+                        string apellido = reader["apellido"].ToString();
 
                         lista.Add(new FotoRegistro
                         {
                             IdFoto = Convert.ToInt32(reader["idFoto"]),
                             IdCliente = Convert.ToInt32(reader["idCliente"]),
+                            NombreCompleto = $"{nombre} {apellido}",
                             Fecha = Convert.ToDateTime(reader["fecha"]),
                             FotoBytes = fotoBytes,
                             Embedding = embeddingBytes != null ? FaceEmbeddingService.BytesToDoubleArray(embeddingBytes) : null
@@ -375,8 +364,12 @@ namespace fotomaster
 
         private void MostrarResultados(List<FotoRegistro> resultados)
         {
+            dgvFotos.DataSource = null;
+            dgvFotos.Columns.Clear();
+
             DataTable dt = new DataTable();
             dt.Columns.Add("Foto", typeof(System.Drawing.Image));
+            dt.Columns.Add("Cliente", typeof(string));
             dt.Columns.Add("Fecha", typeof(DateTime));
 
             foreach (var r in resultados)
@@ -384,14 +377,19 @@ namespace fotomaster
                 using (MemoryStream ms = new MemoryStream(r.FotoBytes))
                 {
                     System.Drawing.Image img = System.Drawing.Image.FromStream(ms);
-                    dt.Rows.Add(img, r.Fecha);
+                    dt.Rows.Add(img, r.NombreCompleto, r.Fecha);
                 }
             }
 
             dgvFotos.DataSource = dt;
-            dgvFotos.RowTemplate.Height = 100;
-            dgvFotos.Columns["Foto"].Width = 100;
+            dgvFotos.RowTemplate.Height = 130;
+            dgvFotos.Columns["Foto"].Width = 150;
             ((DataGridViewImageColumn)dgvFotos.Columns["Foto"]).ImageLayout = DataGridViewImageCellLayout.Zoom;
+            // 3. Hacemos que la columna de la fecha se ajuste a su contenido.
+            dgvFotos.Columns["Fecha"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+            // 4. Hacemos que la columna "Cliente" RELLENE todo el espacio sobrante.
+            dgvFotos.Columns["Cliente"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         private Bitmap ByteArrayToBitmap(byte[] bytes)
@@ -416,39 +414,9 @@ namespace fotomaster
             }
         }
 
-        private void btnTestSelf_Click(object sender, EventArgs e)
-        {
-            var regs = CargarFotosConEmbeddings();
-            var uno = regs.FirstOrDefault(r => r.Embedding != null);
-            if (uno != null)
-            {
-                using (var ms = new MemoryStream(uno.FotoBytes))
-                using (var bmp = new Bitmap(ms))
-                {
-                    var again = _faceService.GetEncodingFromBitmap(bmp);
-                    if (again == null)
-                    {
-                        MessageBox.Show("No se detectó rostro o el embedding fue inválido.");
-                    }
-                    else
-                    {
-                        double d = FaceEmbeddingService.Euclidean(again, uno.Embedding);
-                        MessageBox.Show($"Distancia foto vs. sí misma: {d:0.000}");
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("No hay registros con embedding en la BD.");
-            }
-        }
 
-        private void btnCheckEmbeddings_Click(object sender, EventArgs e)
-        {
-            var regs = CargarFotosConEmbeddings();
-            int sinEmb = regs.Count(r => r.Embedding == null);
-            MessageBox.Show($"Fotos cargadas: {regs.Count}\nSin embedding: {sinEmb}");
-        }
+
+
 
         private void BtnCargarFoto_Click(object sender, EventArgs e)
         {
@@ -545,37 +513,75 @@ namespace fotomaster
 
         }
 
-        private void BtnIndexarEmbeddings_Click(object sender, EventArgs e)
+        private void btnvolver_Click(object sender, EventArgs e)
         {
-            // Muestra una advertencia al usuario
-            var confirmResult = MessageBox.Show(
-                "Esto recalculará el embedding para TODAS las fotos de la base de datos. ¿Estás seguro? El proceso puede tardar.",
-                "Confirmar Re-Indexación Completa",
-                MessageBoxButtons.YesNo);
+            FormAdmin admin = new FormAdmin();
+            admin.Show();
+            this.Close();
+        }
 
-            if (confirmResult == DialogResult.No)
+        private void btnRefrescar_Click(object sender, EventArgs e)
+        {
+            // 1. Limpia el campo de búsqueda de texto
+            txtBuscarCliente.Clear();
+
+            // 2. Oculta la lista de sugerencias de clientes
+            listClientes.Visible = false;
+            listClientes.DataSource = null;
+
+            // 3. Limpia la tabla de fotos
+            dgvFotos.DataSource = null;
+
+            // 4. Limpia el visor de imagen principal
+            // Es importante verificar si la imagen no es nula antes de intentar liberarla
+            if (pictureBox1.Image != null)
             {
-                return;
+                pictureBox1.Image.Dispose();
+                pictureBox1.Image = null;
             }
 
-            List<FotoRegistro> registros = CargarFotosConEmbeddings();
-            int count = 0;
-
-            foreach (var reg in registros)
+            if (pictureBoxConsulta.Image != null)
             {
-                // Hemos quitado el 'if' para que procese todas las fotos
-                Bitmap bmp = ByteArrayToBitmap(reg.FotoBytes);
-                double[] nuevoEmbedding = _faceService.GetEncodingFromBitmap(bmp); // Lo guardamos en una nueva variable
+                pictureBoxConsulta.Image.Dispose();
+                pictureBoxConsulta.Image = null;
+            }
 
-                // Solo actualizamos si el nuevo embedding es válido
-                if (nuevoEmbedding != null)
+            // 5. Reinicia la variable que guarda la imagen para la búsqueda por IA
+            if (queryBitmap != null)
+            {
+                queryBitmap.Dispose();
+                queryBitmap = null;
+            }
+
+            // 6. Resetea la variable del cliente seleccionado
+            idClienteSeleccionado = 0;
+        }
+
+        private void btndescargar_Click(object sender, EventArgs e)
+        {
+            if (pictureBoxConsulta.Image != null)
+            {
+                using (SaveFileDialog sfd = new SaveFileDialog())
                 {
-                    ActualizarEmbeddingBD(reg.IdFoto, nuevoEmbedding);
-                    count++;
+                    sfd.Filter = "PNG Image|*.png|JPEG Image|*.jpg|Bitmap Image|*.bmp";
+                    sfd.Title = "Guardar imagen";
+
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        // 🔹 Clonar la imagen para evitar bloqueo de GDI+
+                        using (Bitmap bmp = new Bitmap(pictureBoxConsulta.Image))
+                        {
+                            bmp.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                        }
+
+                        MessageBox.Show("Imagen guardada correctamente");
+                    }
                 }
             }
-
-            MessageBox.Show($"Embeddings actualizados para {count} fotos.");
+            else
+            {
+                MessageBox.Show("No hay ninguna imagen en el PictureBox");
+            }
         }
     }
 }
