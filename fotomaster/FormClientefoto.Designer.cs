@@ -69,7 +69,7 @@
             listClientes.ItemHeight = 15;
             listClientes.Location = new Point(178, 240);
             listClientes.Name = "listClientes";
-            listClientes.Size = new Size(295, 64);
+            listClientes.Size = new Size(295, 109);
             listClientes.TabIndex = 2;
             // 
             // btnRefrescar
