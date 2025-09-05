@@ -47,9 +47,9 @@ namespace fotomaster
                 MessageBox.Show("IA no inicializada: " + ex.Message, "Modelos Dlib", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            BtnCargarFoto.Click += BtnCargarFoto_Click;
+        
             btnBuscarPorFoto.Click += btnBuscarPorFoto_Click;
-            BtnIndexarEmbeddings.Click += BtnIndexarEmbeddings_Click_1;
+            BtnIndexarEmbeddings.Click += BtnIndexarEmbeddings_Click;
 
             // === Botones de diagnóstico ===
             btnCheckEmbeddings.Click += btnCheckEmbeddings_Click; // contar embeddings faltantes
@@ -469,13 +469,33 @@ namespace fotomaster
 
         }
 
+        private void ForzarReindexacionCompleta()
+        {
+            List<FotoRegistro> registros = CargarFotosConEmbeddings();
+            int count = 0;
+
+            foreach (var reg in registros)
+            {
+                Bitmap bmp = ByteArrayToBitmap(reg.FotoBytes);
+                double[] nuevoEmbedding = _faceService.GetEncodingFromBitmap(bmp);
+
+                if (nuevoEmbedding != null)
+                {
+                    ActualizarEmbeddingBD(reg.IdFoto, nuevoEmbedding);
+                    count++;
+                }
+            }
+        }
+
         private void btnBuscarPorFoto_Click(object sender, EventArgs e)
-        {      
+        {
             if (queryBitmap == null)
             {
                 MessageBox.Show("Cargar primero una foto de consulta.");
                 return;
             }
+
+            ForzarReindexacionCompleta();
 
             double[] queryEmbedding = _faceService.GetEncodingFromBitmap(queryBitmap);
             if (queryEmbedding == null)
@@ -522,8 +542,40 @@ namespace fotomaster
             }
 
             MostrarResultados(resultados);
-       
-    }
 
+        }
+
+        private void BtnIndexarEmbeddings_Click(object sender, EventArgs e)
+        {
+            // Muestra una advertencia al usuario
+            var confirmResult = MessageBox.Show(
+                "Esto recalculará el embedding para TODAS las fotos de la base de datos. ¿Estás seguro? El proceso puede tardar.",
+                "Confirmar Re-Indexación Completa",
+                MessageBoxButtons.YesNo);
+
+            if (confirmResult == DialogResult.No)
+            {
+                return;
+            }
+
+            List<FotoRegistro> registros = CargarFotosConEmbeddings();
+            int count = 0;
+
+            foreach (var reg in registros)
+            {
+                // Hemos quitado el 'if' para que procese todas las fotos
+                Bitmap bmp = ByteArrayToBitmap(reg.FotoBytes);
+                double[] nuevoEmbedding = _faceService.GetEncodingFromBitmap(bmp); // Lo guardamos en una nueva variable
+
+                // Solo actualizamos si el nuevo embedding es válido
+                if (nuevoEmbedding != null)
+                {
+                    ActualizarEmbeddingBD(reg.IdFoto, nuevoEmbedding);
+                    count++;
+                }
+            }
+
+            MessageBox.Show($"Embeddings actualizados para {count} fotos.");
+        }
     }
 }

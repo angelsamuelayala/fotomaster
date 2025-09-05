@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using Emgu.CV;
@@ -12,7 +9,7 @@ using Emgu.CV.Dnn;
 
 namespace fotomaster
 {
-    internal class FaceEmbeddingService:IDisposable
+    public class FaceEmbeddingService : IDisposable
     {
         private readonly CascadeClassifier _faceDetector;
         private readonly Net _faceRecognizer;

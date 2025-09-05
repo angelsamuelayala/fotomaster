@@ -133,7 +133,7 @@
             // 
             // btnBuscarPorFoto
             // 
-            btnBuscarPorFoto.Location = new Point(234, 683);
+            btnBuscarPorFoto.Location = new Point(214, 669);
             btnBuscarPorFoto.Name = "btnBuscarPorFoto";
             btnBuscarPorFoto.Size = new Size(148, 59);
             btnBuscarPorFoto.TabIndex = 11;
@@ -149,14 +149,15 @@
             BtnIndexarEmbeddings.TabIndex = 12;
             BtnIndexarEmbeddings.Text = "IndexarEmbeddings";
             BtnIndexarEmbeddings.UseVisualStyleBackColor = true;
+            BtnIndexarEmbeddings.Click += BtnIndexarEmbeddings_Click;
             // 
             // BtnCargarFoto
             // 
-            BtnCargarFoto.Location = new Point(120, 550);
+            BtnCargarFoto.Location = new Point(58, 582);
             BtnCargarFoto.Name = "BtnCargarFoto";
             BtnCargarFoto.Size = new Size(155, 49);
             BtnCargarFoto.TabIndex = 13;
-            BtnCargarFoto.Text = "button1";
+            BtnCargarFoto.Text = "Cargar Foto";
             BtnCargarFoto.UseVisualStyleBackColor = true;
             BtnCargarFoto.Click += BtnCargarFoto_Click;
             // 
