@@ -10,10 +10,12 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace fotomaster
 {
-    public partial class FormClientefoto : Form
+    public partial class FormClientefoto : MaterialForm
     {
         private DataTable dtClientes = new DataTable();
         private int idClienteSeleccionado = 0;
@@ -49,7 +51,7 @@ namespace fotomaster
             }
 
 
-            btnBuscarPorFoto.Click += btnBuscarPorFoto_Click;
+            btnBuscarPorFotor.Click += btnBuscarPorFoto_Click;
 
         }
 
@@ -440,9 +442,18 @@ namespace fotomaster
 
         private void btnvolver_Click(object sender, EventArgs e)
         {
-            FormAdmin admin = new FormAdmin();
-            admin.Show();
-            this.Close();
+            if (Sesion.idRol == 1)
+            {
+                FormAdmin frm = new FormAdmin();
+                frm.Show();
+                this.Close();
+            }
+            else if (Sesion.idRol == 2)
+            {
+                FormEmpleado frm = new FormEmpleado();
+                frm.Show();
+                this.Close();
+            }
         }
 
         private void btnRefrescar_Click(object sender, EventArgs e)

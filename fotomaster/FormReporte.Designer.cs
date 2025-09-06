@@ -130,6 +130,7 @@
             btnvolver.TabIndex = 9;
             btnvolver.Text = "Volver";
             btnvolver.UseVisualStyleBackColor = true;
+            btnvolver.Click += btnvolver_Click;
             // 
             // dtpMesAnioDescuento
             // 

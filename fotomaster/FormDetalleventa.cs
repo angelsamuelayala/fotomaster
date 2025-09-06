@@ -43,9 +43,18 @@ namespace fotomaster
 
         private void btnvolver_Click(object sender, EventArgs e)
         {
-            FormAdmin admin = new FormAdmin();
-            admin.Show();
-            this.Close();
+            if (Sesion.idRol == 1)
+            {
+                FormAdmin frm = new FormAdmin();
+                frm.Show();
+                this.Close();
+            }
+            else if (Sesion.idRol == 2)
+            {
+                FormEmpleado frm = new FormEmpleado();
+                frm.Show();
+                this.Close();
+            }
         }
 
         private void CargarClientes()

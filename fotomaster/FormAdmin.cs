@@ -96,6 +96,7 @@ namespace fotomaster
         {
             FormReporte reportesForm = new FormReporte();
             reportesForm.Show();
+            this.Close();
         }
 
         private void btnventa_Click_1(object sender, EventArgs e)
