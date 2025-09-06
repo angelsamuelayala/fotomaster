@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace fotomaster
 {
-    public partial class FormVenta : Form
+    public partial class FormVenta : MaterialForm
     {
         List<DetalleVentaTemp> detallesVenta = new List<DetalleVentaTemp>();
         private DataTable dtClientes = new DataTable();
@@ -29,7 +31,39 @@ namespace fotomaster
             CargarTiempo();
             // 🔹 Cargar clientes en memoria
             CargarClientes();
+            ActualizarGridDetalles();
+            dgvDetallesVenta.RowHeadersVisible = false;
 
+            dgvDetallesVenta.AutoGenerateColumns = false;
+            dgvDetallesVenta.Columns.Clear();
+            dgvDetallesVenta.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Servicio",
+                HeaderText = "Servicio",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+
+            dgvDetallesVenta.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Formato",
+                HeaderText = "Formato",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+
+            dgvDetallesVenta.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Calidad",
+                HeaderText = "Calidad",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+
+            dgvDetallesVenta.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "cantidad",
+                HeaderText = "Cantidad",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            });
+            dgvDetallesVenta.DataSource = detallesVenta;
             // 🔹 Conectar eventos del buscador
             txtBuscarCliente.TextChanged += txtBuscarCliente_TextChanged;
             listClientes.Click += listClientes_Click;
@@ -47,6 +81,7 @@ namespace fotomaster
                 MessageBox.Show("IA no inicializada: " + ex.Message, "Modelos Dlib", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 _faceService = null;
             }
+
 
         }
 
@@ -242,27 +277,82 @@ namespace fotomaster
             }
         }
 
+       
+
         private void btnregistrar_Click(object sender, EventArgs e)
         {
+            if (cbServicio.SelectedIndex == -1 || cbFormato.SelectedIndex == -1 || cbCalidad.SelectedIndex == -1 || string.IsNullOrWhiteSpace(txtCantidad.Text))
+            {
+                MessageBox.Show("Por favor, complete todos los campos antes de registrar el detalle.", "Campos Incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             DetalleVentaTemp detalle = new DetalleVentaTemp
             {
                 idServicio = Convert.ToInt32(cbServicio.SelectedValue),
                 idFormato = Convert.ToInt32(cbFormato.SelectedValue),
                 idCalidad = Convert.ToInt32(cbCalidad.SelectedValue),
                 cantidad = Convert.ToInt32(txtCantidad.Text),
-                fotobinario = ObtenerImagenBinaria()
+                fotobinario = ObtenerImagenBinaria(),
+                Servicio = cbServicio.Text,
+                Formato = cbFormato.Text,
+                Calidad = cbCalidad.Text
+
             };
 
+
+           
+
             detallesVenta.Add(detalle);
+            //ActualizarGridDetalles();
 
             dgvDetallesVenta.DataSource = null;
             dgvDetallesVenta.DataSource = detallesVenta;
-            // Opcional: ocultar la columna del binario en el grid
-            //if (dgvDetallesVenta.Columns["fotobinario"] != null)
-            //    dgvDetallesVenta.Columns["fotobinario"].Visible = false;
-            // Limpiar PictureBox si quieres permitir otra foto
+          
             pictureBoxFoto.Image = null;
+            txtCantidad.Clear();
+            cbServicio.SelectedIndex = -1;
+            cbFormato.SelectedIndex = -1;
+            cbCalidad.SelectedIndex = -1;
         }
+
+        private void ActualizarGridDetalles()
+        {
+            dgvDetallesVenta.DataSource = null;
+            dgvDetallesVenta.DataSource = detallesVenta; // si detallesVenta es List<...> o BindingList<...>
+
+            // Esperar a que existan columnas (ya existen tras asignar DataSource)
+            // Ocultar solo si existen:
+            if (dgvDetallesVenta.Columns.Contains("idServicio"))
+                dgvDetallesVenta.Columns["idServicio"].Visible = false;
+
+            if (dgvDetallesVenta.Columns.Contains("idFormato"))
+                dgvDetallesVenta.Columns["idFormato"].Visible = false;
+
+            if (dgvDetallesVenta.Columns.Contains("idCalidad"))
+                dgvDetallesVenta.Columns["idCalidad"].Visible = false;
+
+            if (dgvDetallesVenta.Columns.Contains("fotobinario"))
+                dgvDetallesVenta.Columns["fotobinario"].Visible = false;
+
+            // Ajuste de tamaño usando DataPropertyName (evita problemas de mayúsculas)
+            foreach (DataGridViewColumn c in dgvDetallesVenta.Columns)
+            {
+                switch (c.DataPropertyName.ToLower())
+                {
+                    case "servicio":
+                    case "formato":
+                    case "calidad":
+                        c.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                        break;
+                    case "cantidad":
+                        c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        break;
+                }
+            }
+        }
+
+
 
         private byte[] ObtenerImagenBinaria()
         {

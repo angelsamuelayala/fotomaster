@@ -18,10 +18,10 @@ namespace fotomaster
         private DataTable dtClientes = new DataTable();
         private int idClienteSeleccionado = 0;
 
-        // IA
+
         private FaceEmbeddingService _faceService;
         private string _modelsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "models");
-        private const double MATCH_THRESHOLD = 0.60; // Ajustable (0.6 ~ estándar FR)
+        private const double MATCH_THRESHOLD = 0.60; 
         private Bitmap queryBitmap;
 
         public FormClientefoto()
@@ -29,18 +29,16 @@ namespace fotomaster
             InitializeComponent();
             CargarClientes();
 
-            // 🔹 Conectar eventos del buscador
             txtBuscarCliente.TextChanged += txtBuscarCliente_TextChanged;
             listClientes.Click += listClientes_Click;
-            // 🔹 Ocultar el ListBox al inicio
+
             listClientes.Visible = false;
             dgvFotos.CellClick += dgvFotos_CellClick;
             dgvFotos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-            dgvFotos.RowHeadersVisible = false;      // Oculta la primera columna gris
+            dgvFotos.RowHeadersVisible = false;     
             dgvFotos.AllowUserToAddRows = false;
 
 
-            // === Inicializa IA ===
             try
             {
                 _faceService = new FaceEmbeddingService(_modelsPath);
@@ -54,8 +52,6 @@ namespace fotomaster
             btnBuscarPorFoto.Click += btnBuscarPorFoto_Click;
 
         }
-
-
 
 
         private void CargarClientes()
@@ -158,13 +154,10 @@ namespace fotomaster
                     ((DataRowView)listClientes.SelectedItem)["idCliente"]
                 );
 
-                // Mostrar el nombre en el TextBox
                 txtBuscarCliente.Text = listClientes.Text;
 
-                // Ocultar la lista
                 listClientes.Visible = false;
 
-                // 🔹 Cargar fotos de este cliente en el DataGridView
                 CargarFotosCliente(idClienteSeleccionado);
                 CargarFotosCliente(idClienteSeleccionado);
             }
@@ -182,67 +175,6 @@ namespace fotomaster
                 }
             }
         }
-
-
-
-
-        /* private void btnIndexarEmbeddings_Click(object sender, EventArgs e)
-         {
-             if (_faceService == null)
-             {
-                 MessageBox.Show("No se inicializó el servicio de IA. Verifica carpeta 'models'.");
-                 return;
-             }
-
-             using (var con = Conexion.ObtenerConexion())
-             {
-                 con.Open();
-
-                 string selectSql = @"SELECT idFoto, fotobinario FROM fotodigital WHERE embedding IS NULL OR OCTET_LENGTH(embedding)=0";
-                 using (var sel = new MySqlCommand(selectSql, con))
-                 using (var reader = sel.ExecuteReader())
-                 {
-                     var pendientes = new List<FotoRegistro>();
-                     while (reader.Read())
-                     {
-                         pendientes.Add(new FotoRegistro
-                         {
-                             IdFoto = reader.GetInt32("idFoto"),
-                             FotoBytes = (byte[])reader["fotobinario"]
-                         });
-                     }
-                     reader.Close();
-
-                     foreach (var item in pendientes)
-                     {
-                         using (var ms = new MemoryStream(item.FotoBytes))
-                         using (var bmp = new Bitmap(ms))
-                         {
-                             var enc = _faceService.GetEncodingFromBitmap(bmp);
-                             if (enc == null)
-                                 continue; // No rostro encontrado
-
-                             var encBytes = FaceEmbeddingService.DoubleArrayToBytes(enc);
-                             string updSql = "UPDATE fotodigital SET embedding=@emb WHERE idFoto=@id";
-                             using (var upd = new MySqlCommand(updSql, con))
-                             {
-                                 upd.Parameters.Add("@emb", MySqlDbType.VarBinary).Value = encBytes;
-                                 upd.Parameters.Add("@id", MySqlDbType.Int32).Value = item.IdFoto;
-                                 upd.ExecuteNonQuery();
-                             }
-                         }
-                     }
-                 }
-             }
-
-             MessageBox.Show("Indexación de embeddings finalizada.");
-         }    */
-
-        // ========================================================
-        // IA: Buscar por foto (desde archivo)
-        // ========================================================
-
-
 
         private void BtnIndexarEmbeddings_Click_1(object sender, EventArgs e)
         {
@@ -274,7 +206,6 @@ namespace fotomaster
             if (_faceService == null)
                 throw new InvalidOperationException("Servicio IA no inicializado.");
 
-            // 1) Serializar imagen a bytes
             byte[] imgBytes;
             using (var ms = new MemoryStream())
             {
@@ -282,14 +213,13 @@ namespace fotomaster
                 imgBytes = ms.ToArray();
             }
 
-            // 2) Calcular embedding
             double[] enc = _faceService.GetEncodingFromBitmap(foto);
             byte[] encBytes = enc != null ? FaceEmbeddingService.DoubleArrayToBytes(enc) : new byte[0];
             if (enc == null)
             {
                 MessageBox.Show("No se detectó rostro en la foto. No se guardará embedding.");
             }
-            // 3) Insertar en BD
+
             using (var con = Conexion.ObtenerConexion())
             {
                 con.Open();
@@ -304,9 +234,6 @@ namespace fotomaster
             }
         }
 
-        // ========================================================
-        // Limpieza
-        // ========================================================
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             base.OnFormClosed(e);
@@ -385,10 +312,10 @@ namespace fotomaster
             dgvFotos.RowTemplate.Height = 130;
             dgvFotos.Columns["Foto"].Width = 150;
             ((DataGridViewImageColumn)dgvFotos.Columns["Foto"]).ImageLayout = DataGridViewImageCellLayout.Zoom;
-            // 3. Hacemos que la columna de la fecha se ajuste a su contenido.
+
             dgvFotos.Columns["Fecha"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
-            // 4. Hacemos que la columna "Cliente" RELLENE todo el espacio sobrante.
+          
             dgvFotos.Columns["Cliente"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
@@ -426,11 +353,11 @@ namespace fotomaster
                 ofd.Filter = "Imágenes|*.jpg;*.jpeg;*.png;*.bmp";
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    // Cargar imagen consulta en pictureBox1 y en queryBitmap
+                  
                     using (var temp = new Bitmap(ofd.FileName))
                     {
                         pictureBox1.Image = new Bitmap(temp);
-                        queryBitmap = new Bitmap(temp); // muy importante, se usará luego en la búsqueda
+                        queryBitmap = new Bitmap(temp); 
                     }
                 }
             }
@@ -472,7 +399,6 @@ namespace fotomaster
                 return;
             }
 
-            // 🔹 Aquí añadimos validaciones antes de comparar
             if (queryEmbedding.Any(x => double.IsNaN(x)))
             {
                 MessageBox.Show("El embedding de la foto consulta contiene valores inválidos (NaN).");
@@ -502,7 +428,6 @@ namespace fotomaster
                     continue;
                 }
 
-                // ✅ Aquí ya es seguro calcular la distancia
                 reg.Distancia = FaceEmbeddingService.Euclidean(queryEmbedding, reg.Embedding);
 
                 if (!double.IsNaN(reg.Distancia) && reg.Distancia <= MATCH_THRESHOLD)
@@ -522,18 +447,16 @@ namespace fotomaster
 
         private void btnRefrescar_Click(object sender, EventArgs e)
         {
-            // 1. Limpia el campo de búsqueda de texto
+       
             txtBuscarCliente.Clear();
 
-            // 2. Oculta la lista de sugerencias de clientes
             listClientes.Visible = false;
             listClientes.DataSource = null;
 
-            // 3. Limpia la tabla de fotos
+            
             dgvFotos.DataSource = null;
 
-            // 4. Limpia el visor de imagen principal
-            // Es importante verificar si la imagen no es nula antes de intentar liberarla
+       
             if (pictureBox1.Image != null)
             {
                 pictureBox1.Image.Dispose();
@@ -546,14 +469,14 @@ namespace fotomaster
                 pictureBoxConsulta.Image = null;
             }
 
-            // 5. Reinicia la variable que guarda la imagen para la búsqueda por IA
+   
             if (queryBitmap != null)
             {
                 queryBitmap.Dispose();
                 queryBitmap = null;
             }
 
-            // 6. Resetea la variable del cliente seleccionado
+
             idClienteSeleccionado = 0;
         }
 
@@ -568,7 +491,7 @@ namespace fotomaster
 
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
-                        // 🔹 Clonar la imagen para evitar bloqueo de GDI+
+                       
                         using (Bitmap bmp = new Bitmap(pictureBoxConsulta.Image))
                         {
                             bmp.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Png);

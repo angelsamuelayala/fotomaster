@@ -60,7 +60,7 @@
             // cmbServicio
             // 
             cmbServicio.FormattingEnabled = true;
-            cmbServicio.Location = new Point(76, 272);
+            cmbServicio.Location = new Point(71, 272);
             cmbServicio.Name = "cmbServicio";
             cmbServicio.Size = new Size(161, 23);
             cmbServicio.TabIndex = 2;
@@ -83,7 +83,7 @@
             // 
             // dtpFecha
             // 
-            dtpFecha.Location = new Point(76, 315);
+            dtpFecha.Location = new Point(71, 318);
             dtpFecha.Name = "dtpFecha";
             dtpFecha.Size = new Size(239, 23);
             dtpFecha.TabIndex = 5;
@@ -91,7 +91,7 @@
             // lblTotalVentas
             // 
             lblTotalVentas.AutoSize = true;
-            lblTotalVentas.Location = new Point(76, 384);
+            lblTotalVentas.Location = new Point(85, 417);
             lblTotalVentas.Name = "lblTotalVentas";
             lblTotalVentas.Size = new Size(38, 15);
             lblTotalVentas.TabIndex = 6;
@@ -108,7 +108,7 @@
             // 
             // btnRefrescar
             // 
-            btnRefrescar.Location = new Point(74, 349);
+            btnRefrescar.Location = new Point(71, 361);
             btnRefrescar.Name = "btnRefrescar";
             btnRefrescar.Size = new Size(109, 27);
             btnRefrescar.TabIndex = 8;
@@ -119,7 +119,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1139, 628);
             Controls.Add(btnRefrescar);
             Controls.Add(lblTotalDescuentos);
             Controls.Add(lblTotalVentas);

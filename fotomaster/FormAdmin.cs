@@ -7,10 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace fotomaster
 {
-    public partial class FormAdmin : Form
+    public partial class FormAdmin : MaterialForm
     {
         string conexion = "Server=127.0.0.1;Database=fotomaster;Uid=root;Pwd=;";
         public FormAdmin()
@@ -78,8 +80,8 @@ namespace fotomaster
 
         private void btnregistrocliente_Click_1(object sender, EventArgs e)
         {
-            FormRegistrousuario usuario = new FormRegistrousuario();
-            usuario.Show();
+            FormRegistrocliente rcliente = new FormRegistrocliente();
+            rcliente.Show();
             this.Close();
         }
 
@@ -92,7 +94,7 @@ namespace fotomaster
 
         private void btnreportes_Click_1(object sender, EventArgs e)
         {
-            FormReportes reportesForm = new FormReportes();
+            FormReporte reportesForm = new FormReporte();
             reportesForm.Show();
         }
 

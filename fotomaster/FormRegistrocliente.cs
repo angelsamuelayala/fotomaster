@@ -8,10 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace fotomaster
 {
-    public partial class FormRegistrocliente : Form
+    public partial class FormRegistrocliente : MaterialForm
     {
         string conexion = "Server=127.0.0.1;Database=fotomaster;Uid=root;Pwd=;";
         public FormRegistrocliente()

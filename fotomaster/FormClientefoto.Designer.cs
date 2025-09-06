@@ -38,9 +38,9 @@
             btndescargar = new Button();
             btnBuscarPorFoto = new Button();
             BtnCargarFoto = new Button();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
+            materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
+            materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
+            materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)dgvFotos).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxConsulta).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -138,41 +138,53 @@
             BtnCargarFoto.UseVisualStyleBackColor = true;
             BtnCargarFoto.Click += BtnCargarFoto_Click;
             // 
-            // label1
+            // materialLabel1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(62, 213);
-            label1.Name = "label1";
-            label1.Size = new Size(91, 15);
-            label1.TabIndex = 14;
-            label1.Text = "Nombre Cliente";
+            materialLabel1.AutoSize = true;
+            materialLabel1.Depth = 0;
+            materialLabel1.Font = new Font("Roboto", 11F);
+            materialLabel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialLabel1.Location = new Point(97, 205);
+            materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel1.Name = "materialLabel1";
+            materialLabel1.Size = new Size(56, 19);
+            materialLabel1.TabIndex = 17;
+            materialLabel1.Text = "Cliente";
             // 
-            // label2
+            // materialLabel2
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(1407, 530);
-            label2.Name = "label2";
-            label2.Size = new Size(105, 15);
-            label2.TabIndex = 15;
-            label2.Text = "Fotografia Sistema";
+            materialLabel2.AutoSize = true;
+            materialLabel2.Depth = 0;
+            materialLabel2.Font = new Font("Roboto", 11F);
+            materialLabel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialLabel2.Location = new Point(1407, 76);
+            materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel2.Name = "materialLabel2";
+            materialLabel2.Size = new Size(127, 19);
+            materialLabel2.TabIndex = 18;
+            materialLabel2.Text = "Fotografia cliente";
             // 
-            // label3
+            // materialLabel3
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(1407, 90);
-            label3.Name = "label3";
-            label3.Size = new Size(101, 15);
-            label3.TabIndex = 16;
-            label3.Text = "Fotografia Cliente";
+            materialLabel3.AutoSize = true;
+            materialLabel3.Depth = 0;
+            materialLabel3.Font = new Font("Roboto", 11F);
+            materialLabel3.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialLabel3.Location = new Point(1407, 516);
+            materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel3.Name = "materialLabel3";
+            materialLabel3.Size = new Size(136, 19);
+            materialLabel3.TabIndex = 19;
+            materialLabel3.Text = "Fotografia sistema";
             // 
             // FormClientefoto
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1924, 1041);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(materialLabel3);
+            Controls.Add(materialLabel2);
+            Controls.Add(materialLabel1);
             Controls.Add(BtnCargarFoto);
             Controls.Add(btnBuscarPorFoto);
             Controls.Add(btndescargar);
@@ -206,8 +218,8 @@
         private Button btndescargar;
         private Button btnBuscarPorFoto;
         private Button BtnCargarFoto;
-        private Label label1;
-        private Label label2;
-        private Label label3;
+        private MaterialSkin.Controls.MaterialLabel materialLabel1;
+        private MaterialSkin.Controls.MaterialLabel materialLabel2;
+        private MaterialSkin.Controls.MaterialLabel materialLabel3;
     }
 }

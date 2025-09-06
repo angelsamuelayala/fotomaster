@@ -8,10 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace fotomaster
 {
-    public partial class FormRegistrousuario : Form
+    public partial class FormRegistrousuario : MaterialForm
     {
         public FormRegistrousuario()
         {

@@ -8,11 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace fotomaster
 {
-    public partial class FormDetalleventa : Form
+    public partial class FormDetalleventa : MaterialForm
     {
         private DataTable dtClientes = new DataTable();
         private int idClienteSeleccionado = 0;
@@ -27,8 +28,17 @@ namespace fotomaster
             listClientes.Visible = false;
             dgvVenta.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvVenta.RowHeadersVisible = false;
-            // Evento del botón refrescar
-            btnRefrescar.Click += btnRefrescar_Click;
+            dgvVenta.AllowUserToAddRows = false;   // quita la última fila vacía
+            dgvDetalle.AllowUserToAddRows = false; // igual para el detalle
+            if (dgvVenta.Columns["idVenta"] != null)
+                dgvVenta.Columns["idVenta"].Visible = false;
+
+            if (dgvVenta.Columns["idCliente"] != null)
+                dgvVenta.Columns["idCliente"].Visible = false;
+
+            dgvVenta.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+
         }
 
         private void btnvolver_Click(object sender, EventArgs e)
@@ -77,12 +87,14 @@ namespace fotomaster
                 SELECT 
                     v.idVenta,
                     u.username AS Usuario,
-                    v.idCliente,
+                    CONCAT(p.nombre, ' ', p.apellido) AS Cliente,
                     t.descripcion AS TiempoEntrega,
                     v.fecha,
                     CONCAT(v.pago, ' Bs') AS Pago
                 FROM Venta v
                 JOIN Usuario u ON v.idUsuario = u.idUsuario
+                JOIN Cliente c ON v.idCliente = c.idCliente
+                JOIN Persona p on c.idCliente = p.idPersona
                 JOIN TiempoEntrega t ON v.idTiempo = t.idTiempo";
 
                     if (idCliente.HasValue)
@@ -160,6 +172,7 @@ namespace fotomaster
         {
             txtBuscarCliente.Clear();
             listClientes.Visible = false;
+            dgvDetalle.DataSource = null;
             CargarVentas();
         }
 
@@ -205,6 +218,12 @@ namespace fotomaster
                     da.Fill(dtDetalle);
 
                     dgvDetalle.DataSource = dtDetalle;
+                    dgvDetalle.RowHeadersVisible = false;
+                    if (dgvDetalle.Columns["idDetalleServicio"] != null)
+                        dgvDetalle.Columns["idDetalleServicio"].Visible = false;
+
+                    // Ajustar ancho de columnas
+                    dgvDetalle.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 }
                 catch (Exception ex)
                 {

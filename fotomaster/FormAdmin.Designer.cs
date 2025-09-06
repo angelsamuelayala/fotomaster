@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnsalir = new Button();
             btnregistrocliente = new Button();
             btnregistrousuario = new Button();
             btnreportes = new Button();
@@ -36,23 +35,14 @@
             btnclientefoto = new Button();
             btnservicios = new Button();
             btndetalleventa = new Button();
+            btnsalirr = new MaterialSkin.Controls.MaterialFlatButton();
             SuspendLayout();
-            // 
-            // btnsalir
-            // 
-            btnsalir.Location = new Point(12, 12);
-            btnsalir.Name = "btnsalir";
-            btnsalir.Size = new Size(102, 52);
-            btnsalir.TabIndex = 0;
-            btnsalir.Text = "Salir";
-            btnsalir.UseVisualStyleBackColor = true;
-            btnsalir.Click += btnsalir_Click_1;
             // 
             // btnregistrocliente
             // 
-            btnregistrocliente.Location = new Point(42, 106);
+            btnregistrocliente.Location = new Point(593, 382);
             btnregistrocliente.Name = "btnregistrocliente";
-            btnregistrocliente.Size = new Size(138, 64);
+            btnregistrocliente.Size = new Size(169, 64);
             btnregistrocliente.TabIndex = 1;
             btnregistrocliente.Text = "Cliente";
             btnregistrocliente.UseVisualStyleBackColor = true;
@@ -60,9 +50,9 @@
             // 
             // btnregistrousuario
             // 
-            btnregistrousuario.Location = new Point(43, 190);
+            btnregistrousuario.Location = new Point(819, 382);
             btnregistrousuario.Name = "btnregistrousuario";
-            btnregistrousuario.Size = new Size(143, 54);
+            btnregistrousuario.Size = new Size(183, 64);
             btnregistrousuario.TabIndex = 2;
             btnregistrousuario.Text = "Usuarios";
             btnregistrousuario.UseVisualStyleBackColor = true;
@@ -70,9 +60,9 @@
             // 
             // btnreportes
             // 
-            btnreportes.Location = new Point(32, 268);
+            btnreportes.Location = new Point(1049, 382);
             btnreportes.Name = "btnreportes";
-            btnreportes.Size = new Size(157, 66);
+            btnreportes.Size = new Size(168, 64);
             btnreportes.TabIndex = 3;
             btnreportes.Text = "Reportes";
             btnreportes.UseVisualStyleBackColor = true;
@@ -80,7 +70,7 @@
             // 
             // btnventa
             // 
-            btnventa.Location = new Point(32, 355);
+            btnventa.Location = new Point(593, 507);
             btnventa.Name = "btnventa";
             btnventa.Size = new Size(168, 65);
             btnventa.TabIndex = 4;
@@ -90,9 +80,9 @@
             // 
             // btnclientefoto
             // 
-            btnclientefoto.Location = new Point(38, 426);
+            btnclientefoto.Location = new Point(1049, 511);
             btnclientefoto.Name = "btnclientefoto";
-            btnclientefoto.Size = new Size(154, 90);
+            btnclientefoto.Size = new Size(168, 65);
             btnclientefoto.TabIndex = 5;
             btnclientefoto.Text = "Clientes Fotos";
             btnclientefoto.UseVisualStyleBackColor = true;
@@ -100,9 +90,9 @@
             // 
             // btnservicios
             // 
-            btnservicios.Location = new Point(38, 543);
+            btnservicios.Location = new Point(1493, 821);
             btnservicios.Name = "btnservicios";
-            btnservicios.Size = new Size(158, 72);
+            btnservicios.Size = new Size(169, 72);
             btnservicios.TabIndex = 6;
             btnservicios.Text = "Servicios";
             btnservicios.UseVisualStyleBackColor = true;
@@ -110,19 +100,37 @@
             // 
             // btndetalleventa
             // 
-            btndetalleventa.Location = new Point(36, 630);
+            btndetalleventa.Location = new Point(820, 507);
             btndetalleventa.Name = "btndetalleventa";
-            btndetalleventa.Size = new Size(159, 69);
+            btndetalleventa.Size = new Size(168, 69);
             btndetalleventa.TabIndex = 7;
             btndetalleventa.Text = "Detalle de venta";
             btndetalleventa.UseVisualStyleBackColor = true;
             btndetalleventa.Click += btndetalleventa_Click_1;
+            // 
+            // btnsalirr
+            // 
+            btnsalirr.AutoSize = true;
+            btnsalirr.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnsalirr.Depth = 0;
+            btnsalirr.Icon = null;
+            btnsalirr.Location = new Point(13, 81);
+            btnsalirr.Margin = new Padding(4, 6, 4, 6);
+            btnsalirr.MouseState = MaterialSkin.MouseState.HOVER;
+            btnsalirr.Name = "btnsalirr";
+            btnsalirr.Primary = false;
+            btnsalirr.Size = new Size(58, 36);
+            btnsalirr.TabIndex = 8;
+            btnsalirr.Text = "Salir";
+            btnsalirr.UseVisualStyleBackColor = true;
+            btnsalirr.Click += btnsalir_Click_1;
             // 
             // FormAdmin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1924, 1041);
+            Controls.Add(btnsalirr);
             Controls.Add(btndetalleventa);
             Controls.Add(btnservicios);
             Controls.Add(btnclientefoto);
@@ -130,15 +138,14 @@
             Controls.Add(btnreportes);
             Controls.Add(btnregistrousuario);
             Controls.Add(btnregistrocliente);
-            Controls.Add(btnsalir);
             Name = "FormAdmin";
             Text = "FormAdmin";
+            WindowState = FormWindowState.Maximized;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private Button btnsalir;
         private Button btnregistrocliente;
         private Button btnregistrousuario;
         private Button btnreportes;
@@ -146,5 +153,6 @@
         private Button btnclientefoto;
         private Button btnservicios;
         private Button btndetalleventa;
+        private MaterialSkin.Controls.MaterialFlatButton btnsalirr;
     }
 }

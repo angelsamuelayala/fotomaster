@@ -13,5 +13,10 @@ namespace fotomaster
         public int idCalidad { get; set; }
         public int cantidad { get; set; }
         public byte[] fotobinario { get; set; }
+
+        public string Servicio { get; set; }
+        public string Formato { get; set; }
+        public string Calidad { get; set; }
+       
     }
 }
